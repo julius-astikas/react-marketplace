@@ -32,7 +32,10 @@ export async function getCategories() {
   return data
 }
 
-export async function getProductsByCategory(categorySlug) {
-  const { data } = await api.get(`/products/category/${categorySlug}`)
+export async function getProductsByCategory({ categorySlug, limit, skip } = {}) {
+  const { data } = await api.get(`/products/category/${categorySlug}`, {
+    params: { limit, skip },
+  })
+
   return data
 }

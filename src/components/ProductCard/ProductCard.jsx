@@ -13,6 +13,9 @@ function ProductCard({ product }) {
         <h2 className={styles.title}>{product.title}</h2>
         <p className={styles.price}>${product.price.toFixed(2)}</p>
         <p className={styles.category}>{category}</p>
+        <p className={styles.location}>
+          {product.marketplace.country} · {product.marketplace.region}
+        </p>
       </div>
     </Link>
   )
