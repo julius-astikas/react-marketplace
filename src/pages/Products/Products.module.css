@@ -17,11 +17,20 @@
 .filter select {
   font: inherit;
   padding: 0.4rem 0.5rem;
+  color: var(--text);
+  background: var(--button-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
 }
 
 .filter select:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.filter select:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
 }
 
 @media (max-width: 700px) {
@@ -62,11 +71,17 @@
 
 .pagination button {
   padding: 0.4rem 0.75rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
   border-radius: 6px;
-  background: #fff;
+  background: var(--button-bg);
+  color: var(--text);
   font: inherit;
   cursor: pointer;
+}
+
+.pagination button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
 }
 
 .pagination button:disabled {

@@ -1,3 +1,31 @@
+:root {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --text: #1a1a1a;
+  --muted: #555555;
+  --border: #d9d9d9;
+  --button-bg: #ffffff;
+  --button-hover: #f5f5f5;
+  --image-bg: #f5f5f5;
+  --focus: #1a1a1a;
+  --shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --bg: #121212;
+  --surface: #1c1c1c;
+  --text: #f3f3f3;
+  --muted: #b5b5b5;
+  --border: #3f3f3f;
+  --button-bg: #2a2a2a;
+  --button-hover: #383838;
+  --image-bg: #2a2a2a;
+  --focus: #f3f3f3;
+  --shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+
 *,
 *::before,
 *::after {
@@ -8,6 +36,6 @@ body {
   margin: 0;
   font-family: system-ui, sans-serif;
   line-height: 1.5;
-  color: #1a1a1a;
-  background: #fff;
+  color: var(--text);
+  background: var(--bg);
 }
