@@ -1,6 +1,14 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../../context/CartContext'
 import styles from './Cart.module.css'
+
+const purchaseSteps = [
+  'Payment reserved',
+  'Seller ships the order',
+  'Buyer confirms delivery',
+  'Payment released',
+]
 
 function Cart() {
   const {
@@ -11,6 +19,18 @@ function Cart() {
     totalItems,
     totalPrice,
   } = useCart()
+  const [checkoutOpen, setCheckoutOpen] = useState(false)
+  const [orderPlaced, setOrderPlaced] = useState(false)
+
+  if (cartItems.length === 0 && (checkoutOpen || orderPlaced)) {
+    setCheckoutOpen(false)
+    setOrderPlaced(false)
+  }
+
+  function handleBackToCart() {
+    setCheckoutOpen(false)
+    setOrderPlaced(false)
+  }
 
   return (
     <section>
@@ -86,6 +106,54 @@ function Cart() {
             <p>Total items: {totalItems}</p>
             <p className={styles.total}>Total: ${totalPrice.toFixed(2)}</p>
           </div>
+
+          {!checkoutOpen && (
+            <button
+              type="button"
+              className={styles.checkoutButton}
+              onClick={() => setCheckoutOpen(true)}
+            >
+              Continue to checkout
+            </button>
+          )}
+
+          {checkoutOpen && (
+            <section className={styles.checkout} aria-labelledby="protected-purchase">
+              <h2 id="protected-purchase" className={styles.checkoutTitle}>
+                Protected purchase
+              </h2>
+              <p className={styles.disclaimer}>
+                Demo only — no real payment is processed.
+              </p>
+
+              <ol className={styles.steps}>
+                {purchaseSteps.map((step) => (
+                  <li key={step}>{step}</li>
+                ))}
+              </ol>
+
+              <div className={styles.orderSummary}>
+                <p>Total items: {totalItems}</p>
+                <p className={styles.total}>Order total: ${totalPrice.toFixed(2)}</p>
+              </div>
+
+              <div className={styles.checkoutActions}>
+                <button type="button" onClick={() => setOrderPlaced(true)}>
+                  Place demo order
+                </button>
+                <button type="button" onClick={handleBackToCart}>
+                  Back to cart
+                </button>
+              </div>
+
+              {orderPlaced && (
+                <div className={styles.success} role="status">
+                  <p>Demo order created.</p>
+                  <p>No real payment was processed.</p>
+                </div>
+              )}
+            </section>
+          )}
         </>
       )}
     </section>
