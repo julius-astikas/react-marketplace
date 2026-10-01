@@ -1,11 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { getProductById } from '../../api/products'
+import { useCart } from '../../context/CartContext'
 import { getMarketplaceMetadata } from '../../utils/marketplaceMetadata'
 import styles from './ProductDetails.module.css'
 
 function ProductDetails() {
   const { id } = useParams()
+  const { addToCart } = useCart()
+  const [addedForId, setAddedForId] = useState(null)
 
   const productQuery = useQuery({
     queryKey: ['product', id],
@@ -24,6 +28,12 @@ function ProductDetails() {
       : ''
   const price = Number(product?.price)
   const showBrand = typeof product?.brand === 'string' && product.brand.trim() !== ''
+  const added = addedForId === product?.id
+
+  function handleAddToCart() {
+    addToCart(product)
+    setAddedForId(product.id)
+  }
 
   return (
     <section>
@@ -95,6 +105,20 @@ function ProductDetails() {
                 </dd>
               </div>
             </dl>
+
+            <button
+              type="button"
+              className={styles.addToCart}
+              onClick={handleAddToCart}
+              disabled={product.stock === 0}
+            >
+              Add to cart
+            </button>
+            {added && (
+              <p className={styles.added} role="status">
+                Added to cart
+              </p>
+            )}
           </div>
         </div>
       )}
