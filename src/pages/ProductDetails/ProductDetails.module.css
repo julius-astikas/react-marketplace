@@ -95,6 +95,10 @@
   cursor: pointer;
 }
 
+.addToCart:hover:not(:disabled) {
+  background: var(--button-hover);
+}
+
 .addToCart:disabled {
   opacity: 0.45;
   cursor: not-allowed;

@@ -78,6 +78,11 @@
   min-height: 2.25rem;
 }
 
+.quantity button:hover:not(:disabled),
+.remove:hover {
+  background: var(--button-hover);
+}
+
 .quantity button:disabled {
   opacity: 0.45;
   cursor: not-allowed;
@@ -119,6 +124,11 @@
 
 .checkoutButton {
   margin-top: 1rem;
+}
+
+.checkoutButton:hover,
+.checkoutActions button:hover {
+  background: var(--button-hover);
 }
 
 .checkoutButton:focus-visible,

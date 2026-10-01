@@ -22,14 +22,14 @@ function Cart() {
   const [checkoutOpen, setCheckoutOpen] = useState(false)
   const [orderPlaced, setOrderPlaced] = useState(false)
 
-  if (cartItems.length === 0 && (checkoutOpen || orderPlaced)) {
+  function closeCheckout() {
     setCheckoutOpen(false)
     setOrderPlaced(false)
   }
 
-  function handleBackToCart() {
-    setCheckoutOpen(false)
-    setOrderPlaced(false)
+  function handleRemove(productId) {
+    if (cartItems.length === 1) closeCheckout()
+    removeFromCart(productId)
   }
 
   return (
@@ -91,7 +91,7 @@ function Cart() {
                     <button
                       type="button"
                       className={styles.remove}
-                      onClick={() => removeFromCart(item.id)}
+                      onClick={() => handleRemove(item.id)}
                       aria-label={`Remove ${item.title}`}
                     >
                       Remove
@@ -141,7 +141,7 @@ function Cart() {
                 <button type="button" onClick={() => setOrderPlaced(true)}>
                   Place demo order
                 </button>
-                <button type="button" onClick={handleBackToCart}>
+                <button type="button" onClick={closeCheckout}>
                   Back to cart
                 </button>
               </div>
