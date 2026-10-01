@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom'
+import SearchBar from '../SearchBar/SearchBar'
 import styles from './Layout.module.css'
 
 function Layout() {
@@ -6,6 +7,7 @@ function Layout() {
     <div className={styles.page}>
       <header className={styles.header}>
         <p className={styles.brand}>Marketplace</p>
+        <SearchBar />
         <nav className={styles.nav}>
           <NavLink to="/" end>
             Products

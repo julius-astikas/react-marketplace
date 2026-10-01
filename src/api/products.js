@@ -18,9 +18,9 @@ export async function getProductById(id) {
   return data
 }
 
-export async function searchProducts(query) {
+export async function searchProducts({ query, limit, skip } = {}) {
   const { data } = await api.get('/products/search', {
-    params: { q: query },
+    params: { q: query, limit, skip },
   })
 
   return data
