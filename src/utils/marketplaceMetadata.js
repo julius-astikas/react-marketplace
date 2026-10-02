@@ -25,6 +25,7 @@ export const marketplaceRegions = [
   },
 ]
 
+// DummyJSON has no region or country, so these demo locations are assigned locally.
 const locations = marketplaceRegions.flatMap((region) =>
   region.countries.map((country) => ({
     region: region.name,

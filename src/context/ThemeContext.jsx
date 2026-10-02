@@ -4,6 +4,7 @@ const STORAGE_KEY = 'marketplace-theme'
 
 const ThemeContext = createContext(null)
 
+// Only light and dark are valid. Missing or invalid storage stays light.
 function readStoredTheme() {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
@@ -16,6 +17,7 @@ function readStoredTheme() {
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(readStoredTheme)
 
+  // Apply the theme before paint, then persist it.
   useLayoutEffect(() => {
     document.documentElement.dataset.theme = theme
     localStorage.setItem(STORAGE_KEY, theme)

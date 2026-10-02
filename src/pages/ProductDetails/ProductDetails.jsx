@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 import { getProductById } from '../../api/products'
 import { useCart } from '../../context/CartContext'
 import { getMarketplaceMetadata } from '../../utils/marketplaceMetadata'
+import ProductFacts from './ProductFacts'
 import styles from './ProductDetails.module.css'
 
 function ProductDetails() {
@@ -27,7 +28,6 @@ function ProductDetails() {
       ? product.category.replaceAll('-', ' ')
       : ''
   const price = Number(product?.price)
-  const showBrand = typeof product?.brand === 'string' && product.brand.trim() !== ''
   const added = addedForId === product?.id
 
   function handleAddToCart() {
@@ -69,42 +69,14 @@ function ProductDetails() {
               <p className={styles.description}>{product.description}</p>
             )}
 
-            <dl className={styles.facts}>
-              {category && (
-                <div className={styles.fact}>
-                  <dt>Category</dt>
-                  <dd className={styles.category}>{category}</dd>
-                </div>
-              )}
-
-              {showBrand && (
-                <div className={styles.fact}>
-                  <dt>Brand</dt>
-                  <dd>{product.brand}</dd>
-                </div>
-              )}
-
-              {product.rating != null && (
-                <div className={styles.fact}>
-                  <dt>Rating</dt>
-                  <dd>{product.rating}</dd>
-                </div>
-              )}
-
-              {product.stock != null && (
-                <div className={styles.fact}>
-                  <dt>Stock</dt>
-                  <dd>{product.stock}</dd>
-                </div>
-              )}
-
-              <div className={styles.fact}>
-                <dt>Location</dt>
-                <dd>
-                  {marketplace.country} · {marketplace.region}
-                </dd>
-              </div>
-            </dl>
+            <ProductFacts
+              category={category}
+              brand={product.brand}
+              rating={product.rating}
+              stock={product.stock}
+              country={marketplace.country}
+              region={marketplace.region}
+            />
 
             <button
               type="button"

@@ -1,14 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../../context/CartContext'
+import CartItem from './CartItem'
+import CheckoutPanel from './CheckoutPanel'
 import styles from './Cart.module.css'
-
-const purchaseSteps = [
-  'Payment reserved',
-  'Seller ships the order',
-  'Buyer confirms delivery',
-  'Payment released',
-]
 
 function Cart() {
   const {
@@ -27,6 +22,7 @@ function Cart() {
     setOrderPlaced(false)
   }
 
+  // Quantity cannot reach zero, so only removing the last row can empty the cart.
   function handleRemove(productId) {
     if (cartItems.length === 1) closeCheckout()
     removeFromCart(productId)
@@ -48,58 +44,15 @@ function Cart() {
       {cartItems.length > 0 && (
         <>
           <ul className={styles.list}>
-            {cartItems.map((item) => {
-              const lineTotal = item.price * item.quantity
-
-              return (
-                <li key={item.id} className={styles.item}>
-                  {item.thumbnail && (
-                    <img
-                      className={styles.thumb}
-                      src={item.thumbnail}
-                      alt={item.title}
-                    />
-                  )}
-
-                  <div className={styles.body}>
-                    <h2 className={styles.title}>{item.title}</h2>
-                    <p className={styles.unitPrice}>${item.price.toFixed(2)} each</p>
-
-                    <div className={styles.quantity}>
-                      <button
-                        type="button"
-                        onClick={() => decreaseQuantity(item.id)}
-                        disabled={item.quantity <= 1}
-                        aria-label={`Decrease quantity of ${item.title}`}
-                      >
-                        −
-                      </button>
-                      <span aria-live="polite">{item.quantity}</span>
-                      <button
-                        type="button"
-                        onClick={() => increaseQuantity(item.id)}
-                        aria-label={`Increase quantity of ${item.title}`}
-                      >
-                        +
-                      </button>
-                    </div>
-
-                    <p className={styles.subtotal}>
-                      Subtotal: ${lineTotal.toFixed(2)}
-                    </p>
-
-                    <button
-                      type="button"
-                      className={styles.remove}
-                      onClick={() => handleRemove(item.id)}
-                      aria-label={`Remove ${item.title}`}
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </li>
-              )
-            })}
+            {cartItems.map((item) => (
+              <CartItem
+                key={item.id}
+                item={item}
+                onDecrease={decreaseQuantity}
+                onIncrease={increaseQuantity}
+                onRemove={handleRemove}
+              />
+            ))}
           </ul>
 
           <div className={styles.summary}>
@@ -118,41 +71,13 @@ function Cart() {
           )}
 
           {checkoutOpen && (
-            <section className={styles.checkout} aria-labelledby="protected-purchase">
-              <h2 id="protected-purchase" className={styles.checkoutTitle}>
-                Protected purchase
-              </h2>
-              <p className={styles.disclaimer}>
-                Demo only — no real payment is processed.
-              </p>
-
-              <ol className={styles.steps}>
-                {purchaseSteps.map((step) => (
-                  <li key={step}>{step}</li>
-                ))}
-              </ol>
-
-              <div className={styles.orderSummary}>
-                <p>Total items: {totalItems}</p>
-                <p className={styles.total}>Order total: ${totalPrice.toFixed(2)}</p>
-              </div>
-
-              <div className={styles.checkoutActions}>
-                <button type="button" onClick={() => setOrderPlaced(true)}>
-                  Place demo order
-                </button>
-                <button type="button" onClick={closeCheckout}>
-                  Back to cart
-                </button>
-              </div>
-
-              {orderPlaced && (
-                <div className={styles.success} role="status">
-                  <p>Demo order created.</p>
-                  <p>No real payment was processed.</p>
-                </div>
-              )}
-            </section>
+            <CheckoutPanel
+              totalItems={totalItems}
+              totalPrice={totalPrice}
+              orderPlaced={orderPlaced}
+              onPlaceOrder={() => setOrderPlaced(true)}
+              onBack={closeCheckout}
+            />
           )}
         </>
       )}

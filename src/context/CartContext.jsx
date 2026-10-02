@@ -31,6 +31,7 @@ function normalizeCartItem(item) {
   }
 }
 
+// Missing or invalid storage becomes an empty cart instead of crashing.
 function readStoredCart() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
@@ -48,6 +49,7 @@ function readStoredCart() {
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState(readStoredCart)
 
+  // Persist every cart change, including an empty cart.
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(cartItems))
   }, [cartItems])

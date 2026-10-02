@@ -1,6 +1,6 @@
 # React Marketplace
 
-A React marketplace application. Products are loaded from the DummyJSON API. The project demonstrates routing, data fetching, filtering, search, the Context API, and cart and theme state.
+A React marketplace application for browsing products, viewing details, and managing a shopping cart. Products come from the DummyJSON API. The project demonstrates routing, data fetching, filtering, search, the Context API, and cart and theme state.
 
 ## Features
 
@@ -19,14 +19,14 @@ Demo checkout does not process real payments.
 
 ## Technologies
 
-- React
-- Vite
-- React Router
-- TanStack Query
-- Axios
-- Context API
-- CSS Modules
-- DummyJSON Products API
+- React — component-based UI
+- Vite — local development and production build
+- React Router — client-side routing
+- TanStack Query — API loading, error, and cache handling
+- Axios — API requests
+- Context API — shared cart and theme state
+- CSS Modules — component-scoped styling
+- DummyJSON Products API — product data without a custom backend
 
 ## Routes
 
@@ -38,6 +38,14 @@ Demo checkout does not process real payments.
 ## Data
 
 Product data comes from DummyJSON. Region and country metadata is generated locally for demonstration purposes.
+
+## Project Structure
+
+- `src/api` — DummyJSON requests
+- `src/components` — shared UI, such as the layout, search bar, and product card
+- `src/context` — cart and theme state
+- `src/pages` — route screens and their page-specific parts
+- `src/utils` — local marketplace location helpers
 
 ## Run locally
 
@@ -51,6 +59,17 @@ npm run dev
 ```bash
 npm run build
 ```
+
+## Future Improvements
+
+The core assignment requirements are complete.
+
+Possible next steps:
+
+- sorting
+- product image gallery
+- skeleton loading
+- debounced search
 
 ## Live Demo
 
