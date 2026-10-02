@@ -1,16 +1,57 @@
-# React + Vite
+# React Marketplace
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A React marketplace application. Products are loaded from the DummyJSON API. The project demonstrates routing, data fetching, filtering, search, the Context API, and cart and theme state.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Product grid with pagination
+- Product search
+- Category filtering
+- Region and country filtering
+- Product details pages
+- Shopping cart with quantity controls
+- Cart persistence with localStorage
+- Light / dark theme with localStorage
+- Responsive layout
+- Demo protected checkout flow
 
-## React Compiler
+Demo checkout does not process real payments.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Technologies
 
-## Expanding the Oxlint configuration
+- React
+- Vite
+- React Router
+- TanStack Query
+- Axios
+- Context API
+- CSS Modules
+- DummyJSON Products API
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Routes
+
+- `/` — product list
+- `/products/:id` — product details
+- `/cart` — shopping cart
+- any other path — 404 fallback
+
+## Data
+
+Product data comes from DummyJSON. Region and country metadata is generated locally for demonstration purposes.
+
+## Run locally
+
+```bash
+npm install
+npm run dev
+```
+
+## Build
+
+```bash
+npm run build
+```
+
+## Live Demo
+
+Live demo: To be added after deployment.
