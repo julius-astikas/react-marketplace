@@ -1,16 +1,21 @@
+import { useSearchParams } from 'react-router-dom'
 import ProductCard from '../../components/ProductCard/ProductCard'
-import { useProducts } from '../../hooks/useProducts'
+import { useProductCatalog, useProductFilters } from '../../hooks/useProducts'
 import Pagination from './Pagination'
 import ProductFilters from './ProductFilters'
 import styles from './Products.module.css'
 
 function Products() {
+  const filters = useProductFilters()
+  const [searchParams] = useSearchParams()
+  const searchTerm = searchParams.get('q')?.trim() ?? ''
+
+  // A new ?q= remounts the listing, so its page state starts at 1.
+  return <ProductListing key={searchTerm} filters={filters} />
+}
+
+function ProductListing({ filters }) {
   const {
-    category,
-    region,
-    country,
-    categories,
-    countryOptions,
     handleCategoryChange,
     handleRegionChange,
     handleCountryChange,
@@ -21,7 +26,7 @@ function Products() {
     pageCount,
     goToPreviousPage,
     goToNextPage,
-  } = useProducts()
+  } = useProductCatalog(filters)
   const showResults = !isPending && !isError
 
   return (
@@ -29,11 +34,11 @@ function Products() {
       <h1>Products</h1>
 
       <ProductFilters
-        category={category}
-        region={region}
-        country={country}
-        categories={categories}
-        countryOptions={countryOptions}
+        category={filters.category}
+        region={filters.region}
+        country={filters.country}
+        categories={filters.categories}
+        countryOptions={filters.countryOptions}
         onCategoryChange={handleCategoryChange}
         onRegionChange={handleRegionChange}
         onCountryChange={handleCountryChange}

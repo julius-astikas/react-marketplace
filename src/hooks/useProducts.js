@@ -15,32 +15,44 @@ import {
 
 const PAGE_SIZE = 12
 
-export function useProducts() {
-  const [searchParams] = useSearchParams()
-  const searchTerm = searchParams.get('q')?.trim() ?? ''
-  const [currentPage, setCurrentPage] = useState(1)
+export function useProductFilters() {
   const [category, setCategory] = useState('')
   const [region, setRegion] = useState('')
   const [country, setCountry] = useState('')
-  const [pageSearchTerm, setPageSearchTerm] = useState(searchTerm)
-
-  // Reset before paint so a new search does not request or show a later page.
-  const searchChanged = searchTerm !== pageSearchTerm
-  if (searchChanged) {
-    setPageSearchTerm(searchTerm)
-    setCurrentPage(1)
-  }
-
-  const limit = PAGE_SIZE
-  const activePage = searchChanged ? 1 : currentPage
-  const skip = (activePage - 1) * limit
-  const searchActive = Boolean(searchTerm)
-  const locationActive = Boolean(region || country)
 
   const categoriesQuery = useQuery({
     queryKey: ['categories'],
     queryFn: getCategories,
   })
+
+  return {
+    category,
+    setCategory,
+    region,
+    setRegion,
+    country,
+    setCountry,
+    categories: categoriesQuery.data ?? [],
+    countryOptions: getCountriesForRegion(region),
+  }
+}
+
+export function useProductCatalog(filters) {
+  const {
+    category,
+    setCategory,
+    region,
+    setRegion,
+    country,
+    setCountry,
+  } = filters
+  const [searchParams] = useSearchParams()
+  const searchTerm = searchParams.get('q')?.trim() ?? ''
+  const [currentPage, setCurrentPage] = useState(1)
+  const limit = PAGE_SIZE
+  const skip = (currentPage - 1) * limit
+  const searchActive = Boolean(searchTerm)
+  const locationActive = Boolean(region || country)
 
   const productsQuery = useQuery({
     queryKey: searchActive
@@ -68,7 +80,6 @@ export function useProducts() {
     },
   })
 
-  const categories = categoriesQuery.data ?? []
   const baseProducts = productsQuery.data?.products ?? []
   const searchedProducts = searchActive
     ? baseProducts.filter((product) => !category || product.category === category)
@@ -85,8 +96,6 @@ export function useProducts() {
   const resultCount = usesLocalPaging
     ? matchedProducts.length
     : (productsQuery.data?.total ?? 0)
-  const pageCount = Math.max(1, Math.ceil(resultCount / limit))
-  const countryOptions = getCountriesForRegion(region)
 
   function handleCategoryChange(event) {
     setCategory(event.target.value)
@@ -104,29 +113,16 @@ export function useProducts() {
     setCurrentPage(1)
   }
 
-  function goToPreviousPage() {
-    setCurrentPage((page) => page - 1)
-  }
-
-  function goToNextPage() {
-    setCurrentPage((page) => page + 1)
-  }
-
   return {
-    category,
-    region,
-    country,
-    categories,
-    countryOptions,
     handleCategoryChange,
     handleRegionChange,
     handleCountryChange,
     isPending: productsQuery.isPending,
     isError: productsQuery.isError,
     pageProducts,
-    activePage,
-    pageCount,
-    goToPreviousPage,
-    goToNextPage,
+    activePage: currentPage,
+    pageCount: Math.max(1, Math.ceil(resultCount / limit)),
+    goToPreviousPage: () => setCurrentPage((page) => page - 1),
+    goToNextPage: () => setCurrentPage((page) => page + 1),
   }
 }
