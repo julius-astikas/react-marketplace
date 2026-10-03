@@ -73,4 +73,4 @@ Possible next steps:
 
 ## Live Demo
 
-Live demo: To be added after deployment.
+Live demo: https://julius-astikas.github.io/react-marketplace/
