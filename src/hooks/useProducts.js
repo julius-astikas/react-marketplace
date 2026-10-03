@@ -97,9 +97,13 @@ export function useProductCatalog(filters) {
     ? matchedProducts.length
     : (productsQuery.data?.total ?? 0)
 
-  function handleCategoryChange(event) {
-    setCategory(event.target.value)
+  function selectCategory(slug) {
+    setCategory(slug)
     setCurrentPage(1)
+  }
+
+  function handleCategoryChange(event) {
+    selectCategory(event.target.value)
   }
 
   function handleRegionChange(event) {
@@ -114,6 +118,7 @@ export function useProductCatalog(filters) {
   }
 
   return {
+    selectCategory,
     handleCategoryChange,
     handleRegionChange,
     handleCountryChange,

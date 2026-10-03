@@ -11,15 +11,21 @@ function Cart() {
     removeFromCart,
     increaseQuantity,
     decreaseQuantity,
+    clearCart,
     totalItems,
     totalPrice,
   } = useCart()
   const [checkoutOpen, setCheckoutOpen] = useState(false)
-  const [orderPlaced, setOrderPlaced] = useState(false)
+  const [completedOrder, setCompletedOrder] = useState(null)
 
   function closeCheckout() {
     setCheckoutOpen(false)
-    setOrderPlaced(false)
+  }
+
+  function placeDemoOrder() {
+    setCompletedOrder({ totalItems, totalPrice })
+    setCheckoutOpen(false)
+    clearCart()
   }
 
   // Quantity cannot reach zero, so only removing the last row can empty the cart.
@@ -29,17 +35,29 @@ function Cart() {
   }
 
   return (
-    <section>
+    <section className={styles.page}>
       <h1>Cart</h1>
+      <Link className={styles.continue} to="/">
+        <span aria-hidden="true">←</span> Continue shopping
+      </Link>
 
-      {cartItems.length === 0 && (
-        <>
-          <p>Your cart is empty.</p>
+      {cartItems.length === 0 && completedOrder && (
+        <div className={styles.success} role="status">
+          <h2>Demo order created</h2>
+          <p>Your demo order has been placed successfully.</p>
+          <p>Total items: {completedOrder.totalItems}</p>
+          <p className={styles.total}>
+            Order total: ${completedOrder.totalPrice.toFixed(2)}
+          </p>
+          <p>No real payment was processed.</p>
+          <p>Cart has been cleared.</p>
           <Link className={styles.continue} to="/">
             Continue shopping
           </Link>
-        </>
+        </div>
       )}
+
+      {cartItems.length === 0 && !completedOrder && <p>Your cart is empty.</p>}
 
       {cartItems.length > 0 && (
         <>
@@ -74,8 +92,7 @@ function Cart() {
             <CheckoutPanel
               totalItems={totalItems}
               totalPrice={totalPrice}
-              orderPlaced={orderPlaced}
-              onPlaceOrder={() => setOrderPlaced(true)}
+              onPlaceOrder={placeDemoOrder}
               onBack={closeCheckout}
             />
           )}

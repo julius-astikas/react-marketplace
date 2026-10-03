@@ -1,6 +1,7 @@
 import { useSearchParams } from 'react-router-dom'
 import ProductCard from '../../components/ProductCard/ProductCard'
 import { useProductCatalog, useProductFilters } from '../../hooks/useProducts'
+import CategoryShortcuts from './CategoryShortcuts'
 import Pagination from './Pagination'
 import ProductFilters from './ProductFilters'
 import styles from './Products.module.css'
@@ -16,6 +17,7 @@ function Products() {
 
 function ProductListing({ filters }) {
   const {
+    selectCategory,
     handleCategoryChange,
     handleRegionChange,
     handleCountryChange,
@@ -32,6 +34,11 @@ function ProductListing({ filters }) {
   return (
     <section>
       <h1>Products</h1>
+
+      <CategoryShortcuts
+        category={filters.category}
+        onSelectCategory={selectCategory}
+      />
 
       <ProductFilters
         category={filters.category}

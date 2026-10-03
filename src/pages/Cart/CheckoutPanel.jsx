@@ -7,7 +7,7 @@ const purchaseSteps = [
   'Payment released',
 ]
 
-function CheckoutPanel({ totalItems, totalPrice, orderPlaced, onPlaceOrder, onBack }) {
+function CheckoutPanel({ totalItems, totalPrice, onPlaceOrder, onBack }) {
   return (
     <section className={styles.checkout} aria-labelledby="protected-purchase">
       <h2 id="protected-purchase" className={styles.checkoutTitle}>
@@ -34,13 +34,6 @@ function CheckoutPanel({ totalItems, totalPrice, orderPlaced, onPlaceOrder, onBa
           Back to cart
         </button>
       </div>
-
-      {orderPlaced && (
-        <div className={styles.success} role="status">
-          <p>Demo order created.</p>
-          <p>No real payment was processed.</p>
-        </div>
-      )}
     </section>
   )
 }

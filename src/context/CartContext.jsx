@@ -54,13 +54,23 @@ export function CartProvider({ children }) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(cartItems))
   }, [cartItems])
 
-  function addToCart(product) {
+  function addToCart(product, quantity = 1) {
+    const amount = Math.max(1, Math.floor(Number(quantity)) || 1)
+    const stock = Number(product?.stock)
+
     setCartItems((items) => {
       const existing = items.find((item) => item.id === product.id)
+      const current = existing ? existing.quantity : 0
+      // The same product stays on one row and cannot pass its stock.
+      const nextQuantity = Number.isFinite(stock)
+        ? Math.min(current + amount, stock)
+        : current + amount
+
+      if (nextQuantity < 1 || nextQuantity === current) return items
 
       if (existing) {
         return items.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item,
+          item.id === product.id ? { ...item, quantity: nextQuantity } : item,
         )
       }
 
@@ -69,7 +79,7 @@ export function CartProvider({ children }) {
         title: product.title,
         price: product.price,
         thumbnail: product.thumbnail ?? '',
-        quantity: 1,
+        quantity: nextQuantity,
       })
 
       return nextItem ? [...items, nextItem] : items
@@ -78,6 +88,10 @@ export function CartProvider({ children }) {
 
   function removeFromCart(productId) {
     setCartItems((items) => items.filter((item) => item.id !== productId))
+  }
+
+  function clearCart() {
+    setCartItems([])
   }
 
   function increaseQuantity(productId) {
@@ -110,6 +124,7 @@ export function CartProvider({ children }) {
         cartItems,
         addToCart,
         removeFromCart,
+        clearCart,
         increaseQuantity,
         decreaseQuantity,
         totalItems,

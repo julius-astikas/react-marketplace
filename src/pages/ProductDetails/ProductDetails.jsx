@@ -11,6 +11,7 @@ function ProductDetails() {
   const { id } = useParams()
   const { addToCart } = useCart()
   const [addedForId, setAddedForId] = useState(null)
+  const [selection, setSelection] = useState({ id: null, quantity: 1 })
 
   const productQuery = useQuery({
     queryKey: ['product', id],
@@ -28,10 +29,26 @@ function ProductDetails() {
       ? product.category.replaceAll('-', ' ')
       : ''
   const price = Number(product?.price)
+  const stock = Number(product?.stock)
+  const stockKnown = Number.isFinite(stock) && stock >= 0
+  const outOfStock = stockKnown && stock === 0
+  const selectedQuantity = selection.id === product?.id ? selection.quantity : 1
+  const quantity = outOfStock
+    ? 1
+    : stockKnown
+      ? Math.min(selectedQuantity, stock)
+      : selectedQuantity
   const added = addedForId === product?.id
 
+  function changeQuantity(next) {
+    if (outOfStock) return
+    const minimum = 1
+    const capped = stockKnown ? Math.min(Math.max(minimum, next), stock) : Math.max(minimum, next)
+    setSelection({ id: product.id, quantity: capped })
+  }
+
   function handleAddToCart() {
-    addToCart(product)
+    addToCart(product, quantity)
     setAddedForId(product.id)
   }
 
@@ -78,14 +95,35 @@ function ProductDetails() {
               region={marketplace.region}
             />
 
-            <button
-              type="button"
-              className={styles.addToCart}
-              onClick={handleAddToCart}
-              disabled={product.stock === 0}
-            >
-              Add to cart
-            </button>
+            <div className={styles.purchase}>
+              <div className={styles.quantity}>
+                <button
+                  type="button"
+                  onClick={() => changeQuantity(quantity - 1)}
+                  disabled={outOfStock || quantity <= 1}
+                  aria-label={`Decrease quantity of ${product.title}`}
+                >
+                  −
+                </button>
+                <span aria-live="polite">{quantity}</span>
+                <button
+                  type="button"
+                  onClick={() => changeQuantity(quantity + 1)}
+                  disabled={outOfStock || (stockKnown && quantity >= stock)}
+                  aria-label={`Increase quantity of ${product.title}`}
+                >
+                  +
+                </button>
+              </div>
+              <button
+                type="button"
+                className={styles.addToCart}
+                onClick={handleAddToCart}
+                disabled={outOfStock}
+              >
+                Add to cart
+              </button>
+            </div>
             {added && (
               <p className={styles.added} role="status">
                 Added to cart

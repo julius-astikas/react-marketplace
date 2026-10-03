@@ -84,8 +84,52 @@
   text-transform: capitalize;
 }
 
-.addToCart {
+.purchase {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
   margin-top: 1.25rem;
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.quantity span {
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.quantity button {
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--button-bg);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.quantity button:hover:not(:disabled) {
+  background: var(--button-hover);
+}
+
+.quantity button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.quantity button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.addToCart {
   padding: 0.4rem 0.75rem;
   border: 1px solid var(--border);
   border-radius: 6px;

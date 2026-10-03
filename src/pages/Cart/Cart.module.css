@@ -1,5 +1,14 @@
+.page {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+}
+
 .continue {
+  display: inline-block;
+  margin: 0.35rem 0 1.25rem;
   color: inherit;
+  text-decoration: none;
 }
 
 .continue:focus-visible {
@@ -9,6 +18,7 @@
 
 .list {
   display: grid;
+  width: 100%;
   gap: 1rem;
   margin: 0;
   padding: 0;
@@ -16,9 +26,12 @@
 }
 
 .item {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  width: 100%;
+  gap: 0.75rem 1rem;
   padding: 1rem;
   border: 1px solid var(--border);
   background: var(--surface);
@@ -26,7 +39,6 @@
 }
 
 .thumb {
-  flex: none;
   width: 5.5rem;
   height: 5.5rem;
   object-fit: contain;
@@ -36,7 +48,6 @@
 
 .body {
   min-width: 0;
-  flex: 1;
 }
 
 .title {
@@ -45,16 +56,23 @@
   overflow-wrap: anywhere;
 }
 
-.unitPrice,
-.subtotal {
+.unitPrice {
   margin: 0.35rem 0 0;
+}
+
+.subtotal {
+  margin: 0;
+  min-width: 9.5rem;
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .quantity {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  margin-top: 0.75rem;
 }
 
 .quantity span {
@@ -95,11 +113,14 @@
 }
 
 .remove {
-  margin-top: 0.75rem;
+  margin: 0;
+  justify-self: end;
 }
 
 .summary {
+  width: fit-content;
   margin-top: 1.5rem;
+  text-align: left;
 }
 
 .summary p {
@@ -123,6 +144,7 @@
 }
 
 .checkoutButton {
+  display: block;
   margin-top: 1rem;
 }
 
@@ -186,20 +208,46 @@
 }
 
 .success {
-  margin-top: 1rem;
+  max-width: 36rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.success h2 {
+  margin: 0;
+  font-size: 1.25rem;
 }
 
 .success p {
-  margin: 0.25rem 0;
+  margin: 0.5rem 0 0;
 }
 
-@media (max-width: 700px) {
+.success .continue {
+  display: inline-block;
+  margin-top: 1rem;
+}
+
+@media (max-width: 800px) {
   .item {
-    flex-direction: column;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
   }
 
-  .thumb {
-    width: 8rem;
-    height: 8rem;
+  .quantity,
+  .subtotal,
+  .remove {
+    grid-column: 1 / -1;
+    justify-self: start;
+    min-width: 0;
+    text-align: left;
+    white-space: normal;
+  }
+
+  .summary,
+  .checkout,
+  .checkoutButton {
+    width: 100%;
+    text-align: left;
   }
 }
